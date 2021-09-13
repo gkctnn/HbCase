@@ -1,8 +1,10 @@
+using Hb.Catalog.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace Hb.Catalog
@@ -27,6 +29,11 @@ namespace Hb.Catalog
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hb.Catalog", Version = "v1" });
             });
+            #endregion
+
+            #region Configuration Dependencies
+            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             #endregion
         }
 

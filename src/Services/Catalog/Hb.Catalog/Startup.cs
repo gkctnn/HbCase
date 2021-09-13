@@ -1,3 +1,5 @@
+using Hb.Catalog.Data;
+using Hb.Catalog.Data.Interfaces;
 using Hb.Catalog.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,10 @@ namespace Hb.Catalog
             #region Configuration Dependencies
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            #endregion
+
+            #region Project Dependencies
+            services.AddTransient<ICatalogContext, CatalogContext>();
             #endregion
         }
 

@@ -1,5 +1,7 @@
 using Hb.Catalog.Data;
 using Hb.Catalog.Data.Interfaces;
+using Hb.Catalog.Repositories;
+using Hb.Catalog.Repositories.Interfaces;
 using Hb.Catalog.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +42,7 @@ namespace Hb.Catalog
 
             #region Project Dependencies
             services.AddTransient<ICatalogContext, CatalogContext>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             #endregion
         }
 

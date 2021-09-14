@@ -9,13 +9,21 @@ services:
     ports:
        - "27017:27017"
 
+  hb-redis:
+    container_name: hb-redis
+    restart: always
+    ports:
+       - "6379:6379"
+
   hb.catalog:
     container_name: hbcatalog
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=mongodb://hbdb:27017"
+      - "CacheSettings:ConnectionString=hb-redis:6379"
     depends_on:
         - hbdb
+        - hb-redis
     ports:
       - "8000:80"
     volumes:

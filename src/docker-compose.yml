@@ -4,6 +4,9 @@ services:
   hbdb:
     image: mongo
 
+  hb-redis:
+    image: redis:alpine
+
   hb.catalog:
     image: ${DOCKER_REGISTRY-}hbcatalog
     build:

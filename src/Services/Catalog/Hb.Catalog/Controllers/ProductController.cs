@@ -2,6 +2,7 @@
 using Hb.Catalog.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,10 +20,10 @@ namespace Hb.Catalog.Controllers
 
         #region Constructor
         public ProductController(IProductRepository productRepository
-                                ,ILogger<ProductController> logger)
+            , ILogger<ProductController> logger)
         {
-            _productRepository = productRepository;
-            _logger = logger;
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         #endregion
 

@@ -44,6 +44,13 @@ namespace Hb.Catalog
             services.AddTransient<ICatalogContext, CatalogContext>();
             services.AddTransient<IProductRepository, ProductRepository>();
             #endregion
+
+            #region Redis Dependencies
+            services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
+                }); 
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

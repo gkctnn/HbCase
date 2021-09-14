@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{94BE76E9-E6E8-4E61-8CDD-DBAD6814205B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{12B763D6-6BC0-41F4-A84A-D62CD955ED11}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CA416780-A279-487B-A4A0-B63A6DF34A26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{B642AA19-93A8-432A-93A0-0DF5C1A73440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B642AA19-93A8-432A-93A0-0DF5C1A73440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B642AA19-93A8-432A-93A0-0DF5C1A73440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA416780-A279-487B-A4A0-B63A6DF34A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA416780-A279-487B-A4A0-B63A6DF34A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA416780-A279-487B-A4A0-B63A6DF34A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA416780-A279-487B-A4A0-B63A6DF34A26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B5C69A83-1587-4AD1-A1A8-AEC0A56F6D1E} = {BAA3DB42-0ACC-4665-BE7A-3B738E3A2667}
 		{B642AA19-93A8-432A-93A0-0DF5C1A73440} = {B5C69A83-1587-4AD1-A1A8-AEC0A56F6D1E}
+		{12B763D6-6BC0-41F4-A84A-D62CD955ED11} = {BAA3DB42-0ACC-4665-BE7A-3B738E3A2667}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A8487FB-D782-4B16-BF71-D4A8E232B785}

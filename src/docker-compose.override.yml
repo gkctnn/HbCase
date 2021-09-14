@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  hbdb:
+    container_name: hbdb
+    restart: always
+    volumes:
+       - ${WEBAPP_STORAGE_HOME}/site:/data/db
+    ports:
+       - "27017:27017"
+
+  hb.catalog:
+    container_name: hbcatalog
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=mongodb://hbdb:27017"
+    depends_on:
+        - hbdb
+    ports:
+      - "8000:80"
+    volumes:
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets

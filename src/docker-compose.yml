@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  hbdb:
+    image: mongo
+
+  hb.catalog:
+    image: ${DOCKER_REGISTRY-}hbcatalog
+    build:
+      context: .
+      dockerfile: Services/Catalog/Hb.Catalog/Dockerfile

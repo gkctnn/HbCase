@@ -1,12 +1,13 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /src
 COPY ["Services/Catalog/Hb.Catalog/Hb.Catalog.csproj", "Services/Catalog/Hb.Catalog/"]
+COPY ["Services/Common/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "Services/Common/EventBusRabbitMQ/"]
 RUN dotnet restore "Services/Catalog/Hb.Catalog/Hb.Catalog.csproj"
 COPY . .
 WORKDIR "/src/Services/Catalog/Hb.Catalog"

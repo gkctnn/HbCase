@@ -4,6 +4,9 @@ services:
   hbdb:
     image: mongo
 
+  rabbitmq:
+    image: rabbitmq:3-management
+
   hb.catalog:
     image: ${DOCKER_REGISTRY-}hbcatalog
     build:

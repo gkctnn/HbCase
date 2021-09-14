@@ -9,7 +9,7 @@ namespace Hb.Catalog.Repositories.Interfaces
         Task<IEnumerable<Product>> GetProducts();
         Task<Product> GetProduct(string id);
         Task<IEnumerable<Product>> GetProductByName(string name);
-        Task<IEnumerable<Product>> GetProductByCategory(string categoryId);
+        Task<IEnumerable<Product>> GetProductByCategoryId(string categoryId);
 
         Task Create(Product product);
         Task<bool> Update(Product product);

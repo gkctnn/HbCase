@@ -9,7 +9,6 @@ namespace Hb.Catalog.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        //[BsonRepresentation(BsonType.ObjectId)]
         public string CategoryId { get; set; }
 
         [BsonElement("Name")]

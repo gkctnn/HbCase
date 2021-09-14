@@ -1,7 +1,12 @@
-﻿using Hb.Catalog.Data.Interfaces;
+﻿using AutoMapper;
+using EventBusRabbitMQ.Core;
+using EventBusRabbitMQ.Events;
+using EventBusRabbitMQ.Producer;
+using Hb.Catalog.Data.Interfaces;
 using Hb.Catalog.Entities;
 using Hb.Catalog.Repositories.Interfaces;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,12 +15,18 @@ namespace Hb.Catalog.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly ICatalogContext _context;
+        private readonly IMapper _mapper;
+        private readonly EventBusRabbitMQProducer _eventBusRabbitMQProducer;
 
-        public ProductRepository(ICatalogContext context)
+        public ProductRepository(ICatalogContext context
+            , IMapper mapper
+            , EventBusRabbitMQProducer eventBusRabbitMQProducer)
         {
             _context = context;
+            _mapper = mapper;
+            _eventBusRabbitMQProducer = eventBusRabbitMQProducer;
         }
-        
+
         public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _context
@@ -25,12 +36,40 @@ namespace Hb.Catalog.Repositories
         }
         public async Task<Product> GetProduct(string id)
         {
-            return await _context
-                            .Products
-                            .Find(p => p.Id == id)
-                            .FirstOrDefaultAsync();
+            //var productCache = await _redisCache.GetStringAsync(id);
+
+            //if (String.IsNullOrEmpty(productCache))
+            //{
+            var product = await _context
+                                    .Products
+                                    .Find(p => p.Id == id)
+                                    .FirstOrDefaultAsync();
+
+            ProductCacheCreateEvent eventMessage = _mapper.Map<ProductCacheCreateEvent>(product);
+
+            try
+            {
+                _eventBusRabbitMQProducer.Publish(EventBusConstants.ProductCacheCreateQueue, eventMessage);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "ERROR Publishing integration event: {EventId} from {AppName}", eventMessage.Id, "ProductRepository");
+                //throw;
+            }
+
+            //await _redisCache.SetStringAsync(id
+            //                                , JsonConvert.SerializeObject(product)
+            //                                , new DistributedCacheEntryOptions
+            //                                {
+            //                                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            //                                });
+
+            return product;
+            //}
+
+            //return JsonConvert.DeserializeObject<Product>(productCache);
         }
-        public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
+        public async Task<IEnumerable<Product>> GetProductByCategoryId(string categoryName)
         {
             FilterDefinition<Product> filter = Builders<Product>
                             .Filter

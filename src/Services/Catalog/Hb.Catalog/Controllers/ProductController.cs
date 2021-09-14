@@ -19,7 +19,7 @@ namespace Hb.Catalog.Controllers
 
         #region Constructor
         public ProductController(IProductRepository productRepository
-                                ,ILogger<ProductController> logger)
+            , ILogger<ProductController> logger)
         {
             _productRepository = productRepository;
             _logger = logger;

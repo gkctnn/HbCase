@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hb.Application\Hb.Application.csproj" />
     <ProjectReference Include="..\Hb.Domain\Hb.Domain.csproj" />
   </ItemGroup>
 

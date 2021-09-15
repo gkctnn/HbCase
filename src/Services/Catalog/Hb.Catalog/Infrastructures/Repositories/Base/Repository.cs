@@ -77,7 +77,7 @@ namespace Hb.Catalog.Infrastructures.Repositories.Base
             return JsonConvert.DeserializeObject<T>(productCache);
         }
 
-        public async Task AddAsync(T entity, int expireTime = 60)
+        public async Task<T> AddAsync(T entity, int expireTime = 60)
         {
             var options = new InsertOneOptions { BypassDocumentValidation = false };
 
@@ -90,6 +90,8 @@ namespace Hb.Catalog.Infrastructures.Repositories.Base
                                                 {
                                                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(expireTime)
                                                 });
+
+            return entity;
         }
         public async Task<bool> UpdateAsync(T entity, int expireTime = 60)
         {

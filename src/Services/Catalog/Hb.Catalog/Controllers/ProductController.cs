@@ -1,5 +1,9 @@
-﻿using Hb.Domain.Entities;
+﻿using Hb.Application.Commands.ProductCreate;
+using Hb.Application.Queries;
+using Hb.Application.Responses;
+using Hb.Domain.Entities;
 using Hb.Domain.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,14 +19,17 @@ namespace Hb.Catalog.Controllers
     {
         #region Variables
         private readonly IProductRepository _productRepository;
+        private readonly IMediator _mediator;
         private readonly ILogger<ProductController> _logger;
         #endregion
 
         #region Constructor
         public ProductController(IProductRepository productRepository
-            , ILogger<ProductController> logger)
+            , ILogger<ProductController> logger
+            , IMediator mediator)
         {
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         #endregion
@@ -39,10 +46,12 @@ namespace Hb.Catalog.Controllers
 
         [HttpGet("{id:length(24)}", Name = "GetProduct")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Product>> GetProduct(string id)
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ProductResponse>> GetProduct(string id)
         {
-            var product = await _productRepository.GetByIdAsync(id, 5);
+            var query = new GetProductByIdQuery(id);
+
+            var product = await _mediator.Send(query);
 
             if (product == null)
             {
@@ -56,11 +65,11 @@ namespace Hb.Catalog.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
+        public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody] ProductCreateCommand command)
         {
-            await _productRepository.AddAsync(product, 5);
+            var result = await _mediator.Send(command);
 
-            return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+            return CreatedAtRoute("GetProduct", new { id = result.Id }, command);
         }
 
         [HttpPut]

@@ -13,7 +13,7 @@ namespace Hb.Domain.Repositories.Base
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetByIdAsync(string id, int expireTime = 60);
-        Task AddAsync(T entity, int expireTime = 60);
+        Task<T> AddAsync(T entity, int expireTime = 60);
         Task<bool> UpdateAsync(T entity, int expireTime = 60);
         Task<bool> DeleteAsync(string id);
     }

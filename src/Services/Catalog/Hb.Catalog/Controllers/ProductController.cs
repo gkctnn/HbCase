@@ -1,5 +1,5 @@
-﻿using Hb.Catalog.Entities;
-using Hb.Catalog.Repositories.Interfaces;
+﻿using Hb.Domain.Entities;
+using Hb.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -32,7 +32,7 @@ namespace Hb.Catalog.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var products = await _productRepository.GetProducts();
+            var products = await _productRepository.GetAllAsync(p => true);
 
             return Ok(products);
         }
@@ -42,7 +42,7 @@ namespace Hb.Catalog.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<Product>> GetProduct(string id)
         {
-            var product = await _productRepository.GetProduct(id);
+            var product = await _productRepository.GetByIdAsync(id, 5);
 
             if (product == null)
             {
@@ -58,7 +58,7 @@ namespace Hb.Catalog.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
         {
-            await _productRepository.Create(product);
+            await _productRepository.AddAsync(product, 5);
 
             return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
         }
@@ -67,7 +67,7 @@ namespace Hb.Catalog.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
-            return Ok(await _productRepository.Update(product));
+            return Ok(await _productRepository.UpdateAsync(product, 5));
         }
 
 
@@ -75,7 +75,7 @@ namespace Hb.Catalog.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
-            return Ok(await _productRepository.Delete(id));
+            return Ok(await _productRepository.DeleteAsync(id));
         }
         #endregion
     }

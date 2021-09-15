@@ -1,9 +1,9 @@
-﻿using Hb.Catalog.Entities;
+﻿using Hb.Domain.Entities;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hb.Catalog.Data
+namespace Hb.Catalog.Infrastructures.Data
 {
     public class CatalogContextSeed
     {

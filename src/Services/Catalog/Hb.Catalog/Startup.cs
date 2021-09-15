@@ -1,15 +1,9 @@
-using Hb.Catalog.Data;
-using Hb.Catalog.Data.Interfaces;
-using Hb.Catalog.Repositories;
-using Hb.Catalog.Repositories.Interfaces;
-using Hb.Catalog.Settings;
+using Hb.Catalog.Infrastructures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 
 namespace Hb.Catalog
 {
@@ -25,32 +19,10 @@ namespace Hb.Catalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
-            #region Swagger Dependencies
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hb.Catalog", Version = "v1" });
-            });
-            #endregion
-
-            #region Configuration Dependencies
-            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
-            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            #endregion
-
-            #region Project Dependencies
-            services.AddTransient<ICatalogContext, CatalogContext>();
-            services.AddTransient<IProductRepository, ProductRepository>();
-            #endregion
-
-            #region Redis Dependencies
-            services.AddStackExchangeRedisCache(options =>
-                {
-                    options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
-                }); 
-            #endregion
+            //DependencyInjection
+            services.AddInfrastructure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,4 @@
-﻿namespace Hb.Catalog.Settings
+﻿namespace Hb.Catalog.Infrastructures.Settings
 {
     public class DatabaseSettings : IDatabaseSettings
     {

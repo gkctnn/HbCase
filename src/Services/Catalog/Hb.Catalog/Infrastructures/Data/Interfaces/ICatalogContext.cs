@@ -1,7 +1,7 @@
-﻿using Hb.Catalog.Entities;
+﻿using Hb.Domain.Entities;
 using MongoDB.Driver;
 
-namespace Hb.Catalog.Data.Interfaces
+namespace Hb.Catalog.Infrastructures.Data.Interfaces
 {
     public interface ICatalogContext
     {

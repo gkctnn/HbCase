@@ -32,6 +32,7 @@ namespace Hb.Catalog.Infrastructures
             #region Project Dependencies
             services.AddTransient(typeof(IRepository<Product>), typeof(ProductRepository));
             services.AddTransient<ICatalogContext, CatalogContext>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             #endregion
 

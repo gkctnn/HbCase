@@ -3,6 +3,7 @@ using Hb.Domain.Entities.Base;
 using Hb.Domain.Repositories.Base;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
@@ -53,28 +54,28 @@ namespace Hb.Catalog.Infrastructures.Repositories.Base
         }
         public async Task<T> GetByIdAsync(string id, int expireTime = 60)
         {
-            var productCache = await _redisCache.GetStringAsync(string.Format(REDIS_CACHE_BY_ID, typeof(T).Name, id));
+            var entityCache = await _redisCache.GetStringAsync(string.Format(REDIS_CACHE_BY_ID, typeof(T).Name, id));
 
-            if (String.IsNullOrEmpty(productCache))
+            if (String.IsNullOrEmpty(entityCache))
             {
-                var product = await Collection
+                var entity = await Collection
                                         .Find(p => p.Id == id)
                                         .FirstOrDefaultAsync();
 
-                if (product != null)
+                if (entity != null)
                 {
                     await _redisCache.SetStringAsync(string.Format(REDIS_CACHE_BY_ID, typeof(T).Name, id)
-                                                , JsonConvert.SerializeObject(product)
+                                                , JsonConvert.SerializeObject(entity)
                                                 , new DistributedCacheEntryOptions
                                                 {
                                                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(expireTime)
                                                 });
                 }
 
-                return product;
+                return entity;
             }
 
-            return JsonConvert.DeserializeObject<T>(productCache);
+            return JsonConvert.DeserializeObject<T>(entityCache);
         }
 
         public async Task<T> AddAsync(T entity, int expireTime = 60)

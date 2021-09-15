@@ -36,10 +36,12 @@ namespace Hb.Catalog.Controllers
 
         #region Crud Actions
         [HttpGet]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
         {
-            var products = await _productRepository.GetAllAsync(p => true);
+            var query = new GetProductsQuery();
+
+            var products = await _mediator.Send(query);
 
             return Ok(products);
         }
@@ -64,7 +66,7 @@ namespace Hb.Catalog.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.Created)]
         public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody] ProductCreateCommand command)
         {
             var result = await _mediator.Send(command);
@@ -81,10 +83,12 @@ namespace Hb.Catalog.Controllers
 
 
         [HttpDelete("{id:length(24)}")]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
-            return Ok(await _productRepository.DeleteAsync(id));
+            var query = new DeleteProductByIdQuery(id);
+
+            return Ok(await _mediator.Send(query));
         }
         #endregion
     }

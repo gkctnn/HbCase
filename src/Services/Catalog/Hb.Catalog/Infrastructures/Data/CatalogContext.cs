@@ -9,14 +9,11 @@ namespace Hb.Catalog.Infrastructures.Data
     {
         public CatalogContext(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
 
-            //Products = database.GetCollection<Product>(settings.CollectionName);
-            //CatalogContextSeed.SeedData(Products);
         }
 
         public IMongoCollection<Product> Products { get; }
+        public IMongoCollection<Category> Categories { get; }
 
     }
 }

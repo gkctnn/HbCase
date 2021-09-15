@@ -25,6 +25,7 @@ namespace Hb.Application
             {
                 cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
                 cfg.AddProfile<ProductMappingProfile>();
+                cfg.AddProfile<CategoryMappingProfile>();
             });
             var mapper = config.CreateMapper();
             #endregion
